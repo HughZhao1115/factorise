@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Feb 26 20:05:32 2020
-
-@author: GHY
-"""
-"""
 Version:1.2
 Changes:Complete Menubar:Added Info
         Added Hotkey
@@ -22,21 +17,25 @@ class fact():
         window.title('十字相乘计算器')
         window.geometry('300x100')
         window.resizable(0,0)
-        #menu
+        #%%menu
         menubar=tk.Menu(window)
+        #rootmenu
         rootmenu=tk.Menu(window,tearoff=False)
         rootmenu.add_command(label = "关于", command = self._about)
         rootmenu.add_command(accelerator='Ctrl+Q',label = "退出",command=self._quit)
-        #resultMenu=tk.Menu(window,tearoff=False)
+        #resultmenu
+        resultMenu=tk.Menu(window,tearoff=False)
+        resultMenu.add_command(accelerator='Ctrl+C',label='复制结果',command=self._copy)
+        #menubar
         menubar.add_cascade(label="十字相乘计算器",menu=rootmenu)
-        #menubar.add_cascade(label="结果",menu=resultMenu)
+        menubar.add_cascade(label="结果",menu=resultMenu)
         menubar.add_command(label="帮助",command=self._help)
         window.config(menu = menubar)
-        #bindings
+        #%%bindings
         window.bind_all('<Control-q>',self._quit)
         window.bind_all('<Return>',self._submit)
-        #window.bind_all('<Control-c>',self._copy)
-        #other
+        window.bind_all('<Control-c>',self._copy)
+        #%%other
         tk.Label(window,text='ax²+bx+c => (x+m)(x+n)').place(x=50,y=0)
         tk.Label(window,text='a:').place(x=50,y=20)
         self._var_a=StringVar()
@@ -53,6 +52,7 @@ class fact():
         self._result=StringVar()
         tk.Label(window,textvariable=self._result).place(x=150,y=40)
         window.mainloop()
+    #%%menu function
     def _quit(self,event=None):
         self._window.destroy()
     def _about(self):
@@ -79,10 +79,10 @@ class fact():
         elif not ifCan:
             self._can_or_not.set('不能分解因式')
             self._result.set('')
-    def _copy(self):
-        #not finished yet
+    def _copy(self,event=None):
         contence=self._result.get()
         pyperclip.copy(contence)
+    #%%core function
     def findFactor(self,num):
         factors=list()
         for suspected in range(-abs(num),abs(num)+1):
@@ -112,6 +112,7 @@ class fact():
                 elif numbers_a[1]*numbers_c[0]+numbers_a[0]*numbers_c[1]==b:
                     return True,[[numbers_a[1],numbers_c[1]],[numbers_a[0],numbers_c[0]]]
         return False,[]
+#%%running
 def main():
     f=fact()
     f.runWindow()
