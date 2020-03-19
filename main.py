@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 """
+Created on Wed Feb 26 20:05:32 2020
+
+@author: GHY
+"""
+"""
 Version:1.2
 Changes:Complete Menubar:Added Info
         Added Hotkey
@@ -8,6 +13,7 @@ import tkinter as tk
 from tkinter import StringVar
 import webbrowser as wb
 import os
+import pyperclip
 VERSION=1.2
 class fact():
     def runWindow(self):
@@ -15,17 +21,21 @@ class fact():
         window=self._window
         window.title('十字相乘计算器')
         window.geometry('300x100')
+        window.resizable(0,0)
         #menu
         menubar=tk.Menu(window)
         rootmenu=tk.Menu(window,tearoff=False)
         rootmenu.add_command(label = "关于", command = self._about)
         rootmenu.add_command(accelerator='Ctrl+Q',label = "退出",command=self._quit)
+        #resultMenu=tk.Menu(window,tearoff=False)
         menubar.add_cascade(label="十字相乘计算器",menu=rootmenu)
+        #menubar.add_cascade(label="结果",menu=resultMenu)
         menubar.add_command(label="帮助",command=self._help)
         window.config(menu = menubar)
         #bindings
         window.bind_all('<Control-q>',self._quit)
         window.bind_all('<Return>',self._submit)
+        #window.bind_all('<Control-c>',self._copy)
         #other
         tk.Label(window,text='ax²+bx+c => (x+m)(x+n)').place(x=50,y=0)
         tk.Label(window,text='a:').place(x=50,y=20)
@@ -49,13 +59,13 @@ class fact():
         top=tk.Toplevel()
         top.title('关于')
         top.geometry('200x60')
+        top.resizable(0,0)
         tk.Label(top,text="版本号："+str(VERSION)).pack()
         tk.Label(top,text='制作者：元素周期表').pack()
         tk.Label(top,text='本项目仅供学习交流使用').pack()
         top.mainloop()
     def _help(self,event=None):
         wb.open(os.path.join(os.getcwd(),'Help.html'))
-        #TODO:finish help method
         pass
     def _submit(self,event=None):
         a=self._var_a.get()
@@ -69,6 +79,10 @@ class fact():
         elif not ifCan:
             self._can_or_not.set('不能分解因式')
             self._result.set('')
+    def _copy(self):
+        #not finished yet
+        contence=self._result.get()
+        pyperclip.copy(contence)
     def findFactor(self,num):
         factors=list()
         for suspected in range(-abs(num),abs(num)+1):
