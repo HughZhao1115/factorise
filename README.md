@@ -14,6 +14,10 @@
 
 > pip install pyperclip
 
+或
+
+> pip install -r requirements.txt
+
 ## 运行
 
 双击main.py即可运行
