@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十字相乘计算器</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+    </script>
+    <script>
+        function run(){
+            var a=$('input#a').val();
+            var b=$('input#b').val();
+            var c=$('input#c').val();
+            var result=Factorise(a,b,c);
+            if (result[0]===false){
+                var contence="不能分解因式"
+            }
+            if (result[0]===true){
+                result=result[1];
+                var contence="可以分解因式"+"("+result[0][0]+"x+("+result[0][1]+"))*("+result[1][0]+"x+("+result[1][1]+"))"
+            }
+            let formate="<div>"+contence+"</div>";
+            $("#结果").html(formate);
+        }
+        function Factorise(a,b,c){
+            a=Number(a);
+            b=Number(b);
+            c=Number(c);
+            if (a===NaN||b===NaN||c===NaN){
+                return [false]
+            }
+            factor_a=findFactor(a);
+            factor_c=findFactor(c);
+            if ((b**2-a*c)===0){
+                return [false]
+            }
+            for (numbers_a of factor_a){
+                for (numbers_c of factor_c){
+                    if ((numbers_a[0]*numbers_c[0]+numbers_a[1]*numbers_c[1])===b){
+                        return [true,[[numbers_a[0],numbers_c[1]],[numbers_a[1],numbers_c[0]]]]
+                    }
+                    if ((numbers_a[1]*numbers_c[0]+numbers_a[0]*numbers_c[1])===b){
+                        return [true,[[numbers_a[1],numbers_c[1]],[numbers_a[0],numbers_c[0]]]]
+                    }
+                }
+            }
+            return [false]
+        }
+        function findFactor(num){
+            var factors=[];
+            for(i=Math.abs(num);i>=-Math.abs(num);i--){
+                if ((num%i)===0){
+                    var theOther=num/i;
+                    factors.push([i,theOther]);
+                }
+            }
+            return factors
+        }
+    </script>
+</head>
+<body>
+    <h1>十字相乘计算器</h1>
+    <p>a:</p><input id=a type="text" name=a>
+    <p>b:</p><input id=b type="text" name=b>
+    <p>c:</p><input id=c type="text" name=c>
+    <button onclick=run()>确定</button>
+    <div id="结果"></div>
+</body>
+</html>
