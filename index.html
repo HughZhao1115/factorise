@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>十字相乘计算器</title>
+    <style>
+        body {
+            width: 50% ;
+            margin-left: auto ;
+            margin-top: 30px ;
+            margin-right: auto ;
+            margin-bottom: 30px ;
+        }
+    </style>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js">
     </script>
     <script>
@@ -59,6 +67,7 @@
     </script>
 </head>
 <body>
+    <article>
     <h1>十字相乘计算器</h1>
     <p>ax²±bx±c => (dx+e)(fx+g)</p>
     <p>a:<input id=a type="text" name=a></p>
@@ -67,5 +76,6 @@
     <p></p>
     <button onclick=run()>确定</button>
     <div id="结果"></div>
+    </article>
 </body>
 </html>

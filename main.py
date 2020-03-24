@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Version:1.2
-Changes:Complete Menubar:Added Info
-        Added Hotkey
+Version:1.21
+Changes:1.提供提公因数功能
+2.优化返回数据
 """
 import tkinter as tk
 from tkinter import StringVar
@@ -71,18 +71,31 @@ class fact():
         a=self._var_a.get()
         b=self._var_b.get()
         c=self._var_c.get()
-        ifCan,factors=self.factorize(a,b,c)
-        if ifCan:
+        returns=self.factorize(a,b,c)
+        if returns[0]:
+            PF=returns[2]
+            factors=returns[1]
             self._can_or_not.set('可以分解因式')
-            self._result.set('(%sx+(%s))*(%sx+(%s))'%(factors[0][0],
+            self._result.set('%s(%sx+(%s))*(%sx+(%s))'%(PF,factors[0][0],
                              factors[0][1],factors[1][0],factors[1][1]))
-        elif not ifCan:
+        elif not returns[0]:
             self._can_or_not.set('不能分解因式')
             self._result.set('')
     def _copy(self,event=None):
         contence=self._result.get()
         pyperclip.copy(contence)
     #%%core function
+    def Decompose(self,num):
+        nums=list()
+        num=int(num)
+        for rounds in range(round(abs(num**0.5))+1):
+            for suspected in range(2,abs(num)+1):
+                if num % suspected == 0:  #可以整除
+                    nums.append(suspected)
+                    num = num // suspected
+                    break
+        nums.sort()
+        return nums
     def findFactor(self,num):
         factors=list()
         for suspected in range(-abs(num),abs(num)+1):
@@ -100,17 +113,30 @@ class fact():
             b=int(b)
             c=int(c)
         except ValueError:
-            return False,[]
+            return False
         if (b**2)-(4*a*c)<0:
-            return False,[]
+            return False
+        PFMax=1
+        PF_a=self.Decompose(a)
+        PF_b=self.Decompose(b)
+        PF_c=self.Decompose(c)
+        for PF in PF_a:
+            if ((PF in PF_b) and (PF in PF_c)):
+                PFMax*=PF
+                PF_a.remove(PF)
+                PF_b.remove(PF)
+                PF_c.remove(PF)
+                a=round(a/PF)
+                b=round(b/PF)
+                c=round(c/PF)
         factor_a=self.findFactor(a)
         factor_c=self.findFactor(c)
         for numbers_a in factor_a:
             for numbers_c in factor_c:
                 if numbers_a[0]*numbers_c[0]+numbers_a[1]*numbers_c[1]==b:
-                    return True,[[numbers_a[0],numbers_c[1]],[numbers_a[1],numbers_c[0]]]
+                    return True,[[numbers_a[0],numbers_c[1]],[numbers_a[1],numbers_c[0]]],PFMax
                 elif numbers_a[1]*numbers_c[0]+numbers_a[0]*numbers_c[1]==b:
-                    return True,[[numbers_a[1],numbers_c[1]],[numbers_a[0],numbers_c[0]]]
+                    return True,[[numbers_a[1],numbers_c[1]],[numbers_a[0],numbers_c[0]]],PFMax
         return False,[]
 #%%running
 def main():
