@@ -113,9 +113,9 @@ class fact():
             b=int(b)
             c=int(c)
         except ValueError:
-            return False
+            return [False]
         if (b**2)-(4*a*c)<0:
-            return False
+            return [False]
         PFMax=1
         PF_a=self.Decompose(a)
         PF_b=self.Decompose(b)
@@ -134,10 +134,10 @@ class fact():
         for numbers_a in factor_a:
             for numbers_c in factor_c:
                 if numbers_a[0]*numbers_c[0]+numbers_a[1]*numbers_c[1]==b:
-                    return True,[[numbers_a[0],numbers_c[1]],[numbers_a[1],numbers_c[0]]],PFMax
+                    return [True,[[numbers_a[0],numbers_c[1]],[numbers_a[1],numbers_c[0]]],PFMax]
                 elif numbers_a[1]*numbers_c[0]+numbers_a[0]*numbers_c[1]==b:
-                    return True,[[numbers_a[1],numbers_c[1]],[numbers_a[0],numbers_c[0]]],PFMax
-        return False,[]
+                    return [True,[[numbers_a[1],numbers_c[1]],[numbers_a[0],numbers_c[0]]],PFMax]
+        return [False,]
 #%%running
 def main():
     f=fact()
