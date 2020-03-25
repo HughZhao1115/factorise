@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Version:1.21
-Changes:1.提供提公因数功能
-2.优化返回数据
+Version:1.2.1.1
+Changes:优化结果显示
 """
 import tkinter as tk
 from tkinter import StringVar
 import webbrowser as wb
 import os
 import pyperclip
-VERSION=1.2
+VERSION='1.2.1.1'
 class fact():
     def runWindow(self):
         self._window=tk.Tk()
@@ -74,10 +73,17 @@ class fact():
         returns=self.factorize(a,b,c)
         if returns[0]:
             PF=returns[2]
+            if PF==1:
+                PF=''
             factors=returns[1]
             self._can_or_not.set('可以分解因式')
-            self._result.set('%s(%sx+(%s))*(%sx+(%s))'%(PF,factors[0][0],
-                             factors[0][1],factors[1][0],factors[1][1]))
+            paren= lambda x:str(x)if abs(x)==x else '('+str(x)+')'
+            d=factors[0][0]
+            e=paren(factors[0][1])
+            f=factors[1][0]
+            g=paren(factors[1][1])
+            self._result.set('%s(%sx+%s)*(%sx+%s)'%(PF,d,
+                             e,f,g))
         elif not returns[0]:
             self._can_or_not.set('不能分解因式')
             self._result.set('')
@@ -107,7 +113,9 @@ class fact():
                     factors.append([suspected,round(num/suspected)])
         return factors[::-1]
     def factorize(self,a,b,c):
-        '''ax^2+bx+c'''
+        '''ax^2+bx+c
+        returns ints
+        '''
         try:
             a=int(a)
             b=int(b)
@@ -133,11 +141,35 @@ class fact():
         factor_c=self.findFactor(c)
         for numbers_a in factor_a:
             for numbers_c in factor_c:
-                if numbers_a[0]*numbers_c[0]+numbers_a[1]*numbers_c[1]==b:
-                    return [True,[[numbers_a[0],numbers_c[1]],[numbers_a[1],numbers_c[0]]],PFMax]
-                elif numbers_a[1]*numbers_c[0]+numbers_a[0]*numbers_c[1]==b:
-                    return [True,[[numbers_a[1],numbers_c[1]],[numbers_a[0],numbers_c[0]]],PFMax]
-        return [False,]
+                d=numbers_a[0]
+                e=numbers_a[1]
+                f=numbers_c[0]
+                g=numbers_c[1]
+                pn=lambda x,y:[abs(x),abs(y),True] if x<0 and y<0 else [x,y,False]
+                sy=lambda bol,num:int('-'+str(num)) if bol else num
+                if d*g+e*f==b:
+                    Symbol=pn(d,f)
+                    d=Symbol[0]
+                    f=Symbol[1]
+                    bol1=Symbol[2]
+                    Symbol=pn(e,g)
+                    e=Symbol[0]
+                    g=Symbol[1]
+                    bol2=Symbol[2]
+                    PFMax=sy((bol1 ^ bol2),PFMax)
+                    return [True,[[d,f],[e,g]],PFMax]
+                elif d*f+e*g==b:
+                    Symbol=pn(d,g)
+                    d=Symbol[0]
+                    g=Symbol[1]
+                    bol1=Symbol[2]
+                    Symbol=pn(e,f)
+                    e=Symbol[0]
+                    f=Symbol[1]
+                    bol2=Symbol[2]
+                    PFMax=sy((bol1 ^ bol2),PFMax)
+                    return [True,[[d,g],[e,f]],PFMax]
+        return [False,[]]
 #%%running
 def main():
     f=fact()
