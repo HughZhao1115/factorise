@@ -59,7 +59,7 @@ class fact():
         top.title('关于')
         top.geometry('200x60')
         top.resizable(0,0)
-        tk.Label(top,text="版本号："+str(VERSION)).pack()
+        tk.Label(top,text="版本号："+VERSION).pack()
         tk.Label(top,text='制作者：元素周期表').pack()
         tk.Label(top,text='本项目仅供学习交流使用').pack()
         top.mainloop()
@@ -77,7 +77,7 @@ class fact():
                 PF=''
             factors=returns[1]
             self._can_or_not.set('可以分解因式')
-            paren= lambda x:str(x)if abs(x)==x else '('+str(x)+')'
+            paren= lambda x:str(x)if x>0 else '('+str(x)+')'
             d=factors[0][0]
             e=paren(factors[0][1])
             f=factors[1][0]
