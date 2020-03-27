@@ -34,14 +34,16 @@
             a=Number(a);
             b=Number(b);
             c=Number(c);
-            if (a===NaN||b===NaN||c===NaN){
+            if (isNaN(a)||isNaN(b)||isNaN(c)){
                 return [false]
             }
-            factor_a=findFactor(a);
-            factor_c=findFactor(c);
+            var factor_a=findFactor(a);
+            var factor_c=findFactor(c);
             if ((b**2-a*c)===0){
                 return [false]
             }
+            var numbers_a;
+            var numbers_c;
             for (numbers_a of factor_a){
                 for (numbers_c of factor_c){
                     if ((numbers_a[0]*numbers_c[0]+numbers_a[1]*numbers_c[1])===b){
@@ -56,6 +58,7 @@
         }
         function findFactor(num){
             var factors=[];
+            var i;
             for(i=Math.abs(num);i>=-Math.abs(num);i--){
                 if ((num%i)===0){
                     var theOther=num/i;
