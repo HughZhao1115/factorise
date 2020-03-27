@@ -14,7 +14,7 @@ class fact():
         self._window=tk.Tk()
         window=self._window
         window.title('十字相乘计算器')
-        window.geometry('300x100')
+        window.geometry('400x150')
         window.resizable(0,0)
         #%%menu
         menubar=tk.Menu(window)
@@ -36,20 +36,20 @@ class fact():
         window.bind_all('<Control-c>',self._copy)
         #%%other
         tk.Label(window,text='ax²+bx+c => (x+m)(x+n)').place(x=50,y=0)
-        tk.Label(window,text='a:').place(x=50,y=20)
+        tk.Label(window,text='a:').place(x=50,y=30)
         self._var_a=StringVar()
-        tk.Entry(window,textvariable=self._var_a,width=3).place(x=70,y=20)
-        tk.Label(window,text='b:').place(x=50,y=40)
+        tk.Entry(window,textvariable=self._var_a,width=3).place(x=70,y=30)
+        tk.Label(window,text='b:').place(x=50,y=60)
         self._var_b=StringVar()
-        tk.Entry(window,textvariable=self._var_b,width=3).place(x=70,y=40)
-        tk.Label(window,text='c:').place(x=50,y=60)
+        tk.Entry(window,textvariable=self._var_b,width=3).place(x=70,y=60)
+        tk.Label(window,text='c:').place(x=50,y=90)
         self._var_c=StringVar()
-        tk.Entry(window,textvariable=self._var_c,width=3).place(x=70,y=60)
-        tk.Button(window,text='确定',command=self._submit).place(x=100,y=30)
+        tk.Entry(window,textvariable=self._var_c,width=3).place(x=70,y=90)
+        tk.Button(window,text='确定',command=self._submit).place(x=150,y=30)
         self._can_or_not=StringVar()
-        tk.Label(window,textvariable=self._can_or_not).place(x=150,y=20)
+        tk.Label(window,textvariable=self._can_or_not).place(x=230,y=20)
         self._result=StringVar()
-        tk.Label(window,textvariable=self._result).place(x=150,y=40)
+        tk.Label(window,textvariable=self._result).place(x=230,y=50)
         window.mainloop()
     #%%menu function
     def _quit(self,event=None):
@@ -65,6 +65,7 @@ class fact():
         top.mainloop()
     def _help(self,event=None):
         wb.open(os.path.join(os.getcwd(),'Help.html'))
+        pass
     def _submit(self,event=None):
         a=self._var_a.get()
         b=self._var_b.get()
