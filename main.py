@@ -65,7 +65,6 @@ class fact():
         top.mainloop()
     def _help(self,event=None):
         wb.open(os.path.join(os.getcwd(),'Help.html'))
-        pass
     def _submit(self,event=None):
         a=self._var_a.get()
         b=self._var_b.get()
