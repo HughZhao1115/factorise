@@ -93,7 +93,7 @@ class fact():
     def Decompose(self,num):
         nums=list()
         num=int(num)
-        for rounds in range(round(abs(num**0.5))+1):
+        for rounds in range(round(abs(num)**0.5)+1):
             for suspected in range(2,abs(num)+1):
                 if num % suspected == 0:  #可以整除
                     nums.append(suspected)
